@@ -78,8 +78,10 @@ class PaymentProofAdminScreen extends StatelessWidget {
                 if (snapshot.hasError) {
                   // Better error display
                   String errorMsg = snapshot.error.toString();
-                  bool isPermissionError = errorMsg.contains('permission-denied');
-                  
+                  bool isPermissionError = errorMsg.contains(
+                    'permission-denied',
+                  );
+
                   return Center(
                     child: Padding(
                       padding: const EdgeInsets.all(24),
@@ -93,9 +95,9 @@ class PaymentProofAdminScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            isPermissionError 
-                              ? "Akses Ditolak" 
-                              : "Terjadi Kesalahan",
+                            isPermissionError
+                                ? "Akses Ditolak"
+                                : "Terjadi Kesalahan",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -106,12 +108,12 @@ class PaymentProofAdminScreen extends StatelessWidget {
                           const SizedBox(height: 8),
                           Text(
                             isPermissionError
-                              ? "Anda tidak memiliki izin untuk mengakses data bukti transfer.\n\n"
-                                "Pastikan:\n"
-                                "• Anda login sebagai admin\n"
-                                "• Email Anda adalah admin@test.com\n"
-                                "• Firestore rules telah diperbaharui"
-                              : "Error: $errorMsg",
+                                ? "Anda tidak memiliki izin untuk mengakses data bukti transfer.\n\n"
+                                    "Pastikan:\n"
+                                    "• Anda login sebagai admin\n"
+                                    "• Email Anda adalah admin@test.com\n"
+                                    "• Firestore rules telah diperbaharui"
+                                : "Error: $errorMsg",
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[700],

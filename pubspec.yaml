@@ -103,7 +103,7 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icon.png"
-  adaptive_icon_background: "#1a237e"  # Navy color from login screen
-  adaptive_icon_foreground: "assets/icon_foreground.png"
+  image_path: "assets/logo_icon.png"
+  adaptive_icon_background: "#0A1D37"
+  adaptive_icon_foreground: "assets/logo_icon.png"
   remove_alpha_ios: true

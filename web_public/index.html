@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Harga Barang - App Search Cost</title>
+    <meta name="description" content="Cari harga barang dengan mudah melalui scan barcode atau pencarian manual">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="material-icons">shopping_cart</span>
+                    <h1>App Search Cost</h1>
+                </div>
+                <p class="tagline">Cek Harga Cepat & Akurat</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="material-icons hero-icon">qr_code_scanner</span>
+                <h2>Cari Harga Barang</h2>
+                <p>Scan barcode atau cari manual untuk mendapatkan harga terbaru</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <div class="search-bar">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="searchInput" placeholder="Cari nama barang..." autocomplete="off">
+                </div>
+                <button class="scan-btn" id="scanBtn">
+                    <span class="material-icons">qr_code_scanner</span>
+                    <span>Scan Barcode</span>
+                </button>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="category-filter" id="categoryFilter">
+                <button class="category-chip active" data-category="all">Semua</button>
+                <button class="category-chip" data-category="Makanan">Makanan</button>
+                <button class="category-chip" data-category="Minuman">Minuman</button>
+                <button class="category-chip" data-category="Alat Tulis">Alat Tulis</button>
+                <button class="category-chip" data-category="Lainnya">Lainnya</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scanner Modal -->
+    <div class="modal" id="scannerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Scan Barcode</h3>
+                <button class="close-btn" id="closeScanner">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="scanner-container">
+                <div id="reader"></div>
+            </div>
+            <p class="scanner-hint">Arahkan kamera ke barcode produk</p>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <!-- Loading State -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Memuat produk...</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error" id="error" style="display: none;">
+                <span class="material-icons">error_outline</span>
+                <p id="errorMessage">Terjadi kesalahan saat memuat data</p>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <span class="material-icons">inventory_2</span>
+                <p>Tidak ada produk ditemukan</p>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be inserted here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 App Search Cost. All rights reserved.</p>
+            <p class="footer-note">Harga dapat berubah sewaktu-waktu</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <!-- Html5-QRCode Library -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+    <!-- App Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/barcode-scanner.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

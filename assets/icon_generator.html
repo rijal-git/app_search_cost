@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #1a237e;
+        }
+
+        canvas {
+            border: 2px solid #ccc;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background: #1a237e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #0d1642;
+        }
+
+        .info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>App Icon Generator - QR Scanner</h1>
+
+        <canvas id="icon" width="1024" height="1024"></canvas>
+        <canvas id="foreground" width="1024" height="1024" style="display:none;"></canvas>
+
+        <div>
+            <button onclick="downloadIcon()">Download icon.png (1024x1024)</button>
+            <button onclick="downloadForeground()">Download icon_foreground.png</button>
+        </div>
+
+        <div class="info">
+            <h3>Instruksi:</h3>
+            <ol style="text-align: left;">
+                <li>Klik tombol "Download icon.png" untuk mengunduh icon utama</li>
+                <li>Klik tombol "Download icon_foreground.png" untuk mengunduh icon foreground (untuk Android adaptive
+                    icon)</li>
+                <li>Simpan kedua file ke folder <code>assets/</code> di project Flutter Anda</li>
+                <li>Jalankan perintah: <code>flutter pub run flutter_launcher_icons</code></li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Draw main icon
+        const canvas = document.getElementById('icon');
+        const ctx = canvas.getContext('2d');
+
+        // Navy background circle
+        ctx.fillStyle = '#1a237e';
+        ctx.beginPath();
+        ctx.arc(512, 512, 512, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw QR scanner icon in gold
+        ctx.fillStyle = '#ffd54f';
+        ctx.strokeStyle = '#ffd54f';
+        ctx.lineWidth = 40;
+
+        // QR scanner frame
+        const frameSize = 400;
+        const frameX = 312;
+        const frameY = 312;
+        const cornerSize = 80;
+
+        // Top-left corner
+        ctx.beginPath();
+        ctx.moveTo(frameX, frameY + cornerSize);
+        ctx.lineTo(frameX, frameY);
+        ctx.lineTo(frameX + cornerSize, frameY);
+        ctx.stroke();
+
+        // Top-right corner
+        ctx.beginPath();
+        ctx.moveTo(frameX + frameSize - cornerSize, frameY);
+        ctx.lineTo(frameX + frameSize, frameY);
+        ctx.lineTo(frameX + frameSize, frameY + cornerSize);
+        ctx.stroke();
+
+        // Bottom-left corner
+        ctx.beginPath();
+        ctx.moveTo(frameX, frameY + frameSize - cornerSize);
+        ctx.lineTo(frameX, frameY + frameSize);
+        ctx.lineTo(frameX + cornerSize, frameY + frameSize);
+        ctx.stroke();
+
+        // Bottom-right corner
+        ctx.beginPath();
+        ctx.moveTo(frameX + frameSize - cornerSize, frameY + frameSize);
+        ctx.lineTo(frameX + frameSize, frameY + frameSize);
+        ctx.lineTo(frameX + frameSize, frameY + frameSize - cornerSize);
+        ctx.stroke();
+
+        // Center scanning line
+        ctx.lineWidth = 30;
+        ctx.beginPath();
+        ctx.moveTo(frameX + 50, frameY + frameSize / 2);
+        ctx.lineTo(frameX + frameSize - 50, frameY + frameSize / 2);
+        ctx.stroke();
+
+        // Draw foreground icon (transparent background)
+        const fgCanvas = document.getElementById('foreground');
+        const fgCtx = fgCanvas.getContext('2d');
+
+        // Draw QR scanner icon in gold on transparent background
+        fgCtx.fillStyle = '#ffd54f';
+        fgCtx.strokeStyle = '#ffd54f';
+        fgCtx.lineWidth = 40;
+
+        // QR scanner frame
+        const fgFrameSize = 600;
+        const fgFrameX = 212;
+        const fgFrameY = 212;
+        const fgCornerSize = 120;
+
+        // Top-left corner
+        fgCtx.beginPath();
+        fgCtx.moveTo(fgFrameX, fgFrameY + fgCornerSize);
+        fgCtx.lineTo(fgFrameX, fgFrameY);
+        fgCtx.lineTo(fgFrameX + fgCornerSize, fgFrameY);
+        fgCtx.stroke();
+
+        // Top-right corner
+        fgCtx.beginPath();
+        fgCtx.moveTo(fgFrameX + fgFrameSize - fgCornerSize, fgFrameY);
+        fgCtx.lineTo(fgFrameX + fgFrameSize, fgFrameY);
+        fgCtx.lineTo(fgFrameX + fgFrameSize, fgFrameY + fgCornerSize);
+        fgCtx.stroke();
+
+        // Bottom-left corner
+        fgCtx.beginPath();
+        fgCtx.moveTo(fgFrameX, fgFrameY + fgFrameSize - fgCornerSize);
+        fgCtx.lineTo(fgFrameX, fgFrameY + fgFrameSize);
+        fgCtx.lineTo(fgFrameX + fgCornerSize, fgFrameY + fgFrameSize);
+        fgCtx.stroke();
+
+        // Bottom-right corner
+        fgCtx.beginPath();
+        fgCtx.moveTo(fgFrameX + fgFrameSize - fgCornerSize, fgFrameY + fgFrameSize);
+        fgCtx.lineTo(fgFrameX + fgFrameSize, fgFrameY + fgFrameSize);
+        fgCtx.lineTo(fgFrameX + fgFrameSize, fgFrameY + fgFrameSize - fgCornerSize);
+        fgCtx.stroke();
+
+        // Center scanning line
+        fgCtx.lineWidth = 45;
+        fgCtx.beginPath();
+        fgCtx.moveTo(fgFrameX + 80, fgFrameY + fgFrameSize / 2);
+        fgCtx.lineTo(fgFrameX + fgFrameSize - 80, fgFrameY + fgFrameSize / 2);
+        fgCtx.stroke();
+
+        function downloadIcon() {
+            const link = document.createElement('a');
+            link.download = 'icon.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function downloadForeground() {
+            const link = document.createElement('a');
+            link.download = 'icon_foreground.png';
+            link.href = fgCanvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && 
+             request.auth.uid in resource.data.adminUids ||
+             request.auth.token.email == 'admin@test.com';
+    }
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // ============================================
+    // USERS COLLECTION
+    // ============================================
+    match /users/{userId} {
+      // User can read own profile
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Admin can read all users
+      allow read: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+      
+      // User can create own profile
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      
+      // User can update own profile
+      allow update: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Admin can delete users
+      allow delete: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+    }
+    
+    // ============================================
+    // PAYMENTS COLLECTION (Bukti Transfer)
+    // ============================================
+    match /payments/{paymentId} {
+      // User can read own payments
+      allow read: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      
+      // Admin can read all payments
+      allow read: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+      
+      // User can create payment (upload bukti transfer)
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      
+      // User can update own payment
+      allow update: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      
+      // Admin can update payment status
+      allow update: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+      
+      // Admin can delete payment
+      allow delete: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+    }
+    
+    // ============================================
+    // PRODUCTS COLLECTION
+    // ============================================
+    match /products/{productId} {
+      // Anyone authenticated can read products
+      allow read: if isAuthenticated();
+      
+      // Admin can create products
+      allow create: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+      
+      // Admin can update products
+      allow update: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+      
+      // Admin can delete products
+      allow delete: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+    }
+    
+    // ============================================
+    // SCAN LOGS COLLECTION
+    // ============================================
+    match /scanLogs/{scanId} {
+      // User can read own logs
+      allow read: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      
+      // Admin can read all logs
+      allow read: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+      
+      // User can create scan log
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      
+      // Admin can delete logs
+      allow delete: if isAuthenticated() && request.auth.token.email == 'admin@test.com';
+    }
+    
+    // Default: Deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -22,6 +22,117 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscure = true;
   bool _isLoading = false;
 
+  /// Show error dialog with prominent styling
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            backgroundColor: Colors.white,
+            title: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade100,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.error,
+                    color: Colors.red.shade700,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.red.shade700,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            content: Text(
+              message,
+              style: const TextStyle(fontSize: 14, height: 1.5),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text(
+                  "OK",
+                  style: TextStyle(color: AppColors.premiumNavy),
+                ),
+              ),
+            ],
+          ),
+    );
+  }
+
+  /// Show success dialog
+  void _showSuccessDialog(String message) {
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            backgroundColor: Colors.white,
+            title: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade100,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.check_circle,
+                    color: Colors.green.shade700,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Text(
+                    "Berhasil",
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            content: Text(
+              message,
+              style: const TextStyle(fontSize: 14, height: 1.5),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                child: const Text(
+                  "Lanjut ke Login",
+                  style: TextStyle(color: AppColors.premiumNavy),
+                ),
+              ),
+            ],
+          ),
+    );
+  }
+
   Future<void> _onRegister() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -49,30 +160,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
 
       if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Registrasi berhasil! Silakan login")),
+      _showSuccessDialog(
+        "Registrasi berhasil!\n\nSilakan login dengan akun Anda.",
       );
-
-      Navigator.pushReplacementNamed(context, '/login');
     } on FirebaseAuthException catch (e) {
-      String message = "Gagal mendaftar";
+      String title = "Registrasi Gagal";
+      String message = "Terjadi kesalahan saat mendaftar";
 
       if (e.code == 'email-already-in-use') {
-        message = "Email sudah digunakan";
+        title = "Email Sudah Terdaftar";
+        message =
+            "Email ini sudah digunakan oleh akun lain.\n"
+            "Silakan gunakan email yang berbeda atau login dengan akun tersebut.";
       } else if (e.code == 'invalid-email') {
-        message = "Format email tidak valid";
+        title = "Email Tidak Valid";
+        message = "Format email yang Anda masukkan tidak valid.";
       } else if (e.code == 'weak-password') {
-        message = "Password terlalu lemah";
+        title = "Password Terlalu Lemah";
+        message =
+            "Password harus memiliki minimal 6 karakter dan kombinasi yang kuat.";
       }
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(message)));
+      if (!mounted) return;
+      _showErrorDialog(title, message);
+      debugPrint("REGISTER ERROR: ${e.code} - ${e.message}");
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+      if (!mounted) return;
+      _showErrorDialog("Error", "Terjadi kesalahan: $e");
+      debugPrint("REGISTER GENERAL ERROR: $e");
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -84,16 +199,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final user = await AuthService().signInWithGoogle();
       if (user != null) {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Registrasi Google Berhasil!")),
+        _showSuccessDialog("Registrasi Google Berhasil!\n\nSelamat datang!");
+      } else {
+        if (!mounted) return;
+        _showErrorDialog(
+          "Login Dibatalkan",
+          "Anda membatalkan proses Google Sign-In.\n"
+              "Silakan coba lagi jika ingin daftar dengan Google.",
         );
-        Navigator.pushReplacementNamed(context, '/dashboard');
       }
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      _showErrorDialog(
+        "Google Sign-In Error",
+        "Kode Error: ${e.code}\n\nPesan: ${e.message ?? 'Tidak ada pesan error'}",
+      );
+      debugPrint("GOOGLE REGISTER ERROR: ${e.code} - ${e.message}");
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Google Sign-In Gagal: $e")));
+      _showErrorDialog(
+        "Google Sign-In Gagal",
+        "Terjadi kesalahan: $e\n\n"
+            "Pastikan Anda memiliki koneksi internet dan Google Services terkonfigurasi dengan benar.",
+      );
+      debugPrint("GOOGLE REGISTER GENERAL ERROR: $e");
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);

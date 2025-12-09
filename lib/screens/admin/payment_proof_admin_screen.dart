@@ -76,7 +76,53 @@ class PaymentProofAdminScreen extends StatelessWidget {
                       .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Center(child: Text("Error: ${snapshot.error}"));
+                  // Better error display
+                  String errorMsg = snapshot.error.toString();
+                  bool isPermissionError = errorMsg.contains('permission-denied');
+                  
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.lock_outline,
+                            size: 64,
+                            color: Colors.red[400],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            isPermissionError 
+                              ? "Akses Ditolak" 
+                              : "Terjadi Kesalahan",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red[700],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            isPermissionError
+                              ? "Anda tidak memiliki izin untuk mengakses data bukti transfer.\n\n"
+                                "Pastikan:\n"
+                                "• Anda login sebagai admin\n"
+                                "• Email Anda adalah admin@test.com\n"
+                                "• Firestore rules telah diperbaharui"
+                              : "Error: $errorMsg",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[700],
+                              height: 1.6,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 }
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());

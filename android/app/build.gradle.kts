@@ -29,13 +29,12 @@ android {
         multiDexEnabled = true
     }
 
-    // >>> Tambahkan ini <<<
     signingConfigs {
         create("release") {
-            storeFile = file("key.jks")       // ganti sesuai file kamu
-            storePassword = "123456"          // ganti sesuai
-            keyAlias = "keyalias"             // ganti sesuai
-            keyPassword = "123456"            // ganti sesuai
+            storeFile = file("release.jks")
+            storePassword = "android123"
+            keyAlias = "release"
+            keyPassword = "android123"
         }
     }
 

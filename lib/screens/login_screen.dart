@@ -94,6 +94,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 .get();
 
         if (!userDoc.exists) {
+          // Check if email is admin - auto-create admin profile
+          if (_email.text.trim() == "admin@test.com") {
+            // Auto-create admin profile
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(userCredential.user!.uid)
+                .set({
+                  'uid': userCredential.user!.uid,
+                  'email': _email.text.trim(),
+                  'username': 'Admin',
+                  'role': 'admin',
+                  'createdAt': FieldValue.serverTimestamp(),
+                });
+            if (!mounted) return;
+            Navigator.pushReplacementNamed(context, '/admin-dashboard');
+            return;
+          }
+
+          // For non-admin users, show error
           if (!mounted) return;
           _showErrorDialog(
             "Akun Belum Terdaftar",

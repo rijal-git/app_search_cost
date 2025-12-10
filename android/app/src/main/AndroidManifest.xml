@@ -51,7 +51,7 @@
 
 
     <application
-        android:label="app_search_cost"
+        android:label="SearchCost"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 

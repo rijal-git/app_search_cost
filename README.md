@@ -1,39 +1,34 @@
 SearchCost
 
-Aplikasi mobile untuk melakukan pencarian, pengecekan, dan pengelolaan data harga barang secara cepat dan akurat. Dibangun menggunakan Flutter dengan integrasi Firebase untuk autentikasi, database, dan layanan backend lainnya.
+Aplikasi mobile untuk pencarian dan pengecekan harga barang secara cepat dan akurat. Dikembangkan menggunakan Flutter dengan integrasi penuh ke Firebase untuk autentikasi, database, dan penyimpanan.
 
 Fitur Utama
 
-Login dan registrasi menggunakan email, username, atau Google Account
+Autentikasi
 
-Scan barcode untuk menemukan harga barang secara instan
+Login menggunakan email dan password
 
-Riwayat pencarian yang tersimpan otomatis
+Login menggunakan akun Google
 
-Dashboard admin untuk mengatur dan memantau data barang dan pengguna
+Registrasi dengan tambahan username
 
-Integrasi penuh dengan Firebase: Authentication, Firestore, Storage
+Pencarian Harga
 
-Tampilan antarmuka yang ringan dan responsif
+Scan barcode secara langsung
 
-Struktur Proyek
-app_search_cost/
-│
-├── lib/
-│   ├── main.dart
-│   ├── screens/
-│   ├── widgets/
-│   ├── services/
-│   └── models/
-│
-├── android/
-├── ios/
-├── web_public/
-└── pubspec.yaml
+Pencarian manual barang
 
-Teknologi yang Digunakan
+Riwayat pencarian tersimpan otomatis
 
-Flutter (Dart)
+Dashboard Admin
+
+Manajemen data barang
+
+Manajemen pengguna
+
+Ringkasan laporan yang diperbarui secara realtime
+
+Integrasi Backend
 
 Firebase Authentication
 
@@ -41,25 +36,46 @@ Cloud Firestore
 
 Firebase Storage
 
+Struktur Proyek
+app_search_cost/
+│
+├── lib/
+│   ├── main.dart
+│   ├── screens/
+│   ├── services/
+│   ├── widgets/
+│   └── models/
+│
+├── android/
+├── ios/
+├── web_public/
+└── pubspec.yaml
+
+Teknologi
+
+Flutter (Dart)
+
+Firebase (Auth, Firestore, Storage)
+
 Google Sign-In
 
-Camera & Barcode Scanner plugins
+Barcode / QR Scanner
 
-Cara Menjalankan Proyek
+Cloud Hosting (opsional)
 
-Pastikan Flutter sudah ter-install.
+Menjalankan Proyek
 
 Clone repository:
 
 git clone <url-repo>
 
 
-Masuk ke folder proyek:
+Masuk ke folder aplikasi:
 
 cd app_search_cost
 
 
-Install dependency:
+Install dependensi:
 
 flutter pub get
 
@@ -70,23 +86,32 @@ flutter run
 
 Konfigurasi Firebase
 
-Pastikan file berikut sudah terpasang:
+Pastikan file berikut tersedia:
+
+Android
 
 android/app/google-services.json
 
+
+Web
+
 web_public/js/firebase-config.js
 
-Jika tidak, setup melalui Firebase Console dan download file konfigurasi.
 
-Build APK Release
+Jika belum ada, unduh dari Firebase Console dan letakkan di path yang sesuai.
+
+Build Release
+
+Android
+
 flutter build apk --release
 
 
-Hasil dapat ditemukan di:
+Output tersedia di:
 
 build/app/outputs/flutter-apk/
 
 Lisensi
 
-Proyek ini dibuat untuk kebutuhan internal dan pengembangan lebih lanjut.
-Lisensi dapat ditambahkan sesuai kebutuhan.
+Proyek ini digunakan untuk kebutuhan pengembangan internal.
+Lisensi dapat ditambahkan sesuai ketentuan penggunaan yang diinginkan.

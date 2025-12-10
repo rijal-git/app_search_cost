@@ -1,42 +1,51 @@
-SearchCost
+# **SearchCost**
 
-Aplikasi mobile untuk pencarian dan pengecekan harga barang secara cepat dan akurat. Dikembangkan menggunakan Flutter dengan integrasi penuh ke Firebase untuk autentikasi, database, dan penyimpanan.
+SearchCost adalah aplikasi pencarian dan analisis harga barang yang dirancang untuk memberikan pengalaman tercepat dan paling praktis dalam menemukan informasi harga.
+Aplikasi ini dibangun menggunakan Flutter, dipadukan dengan infrastruktur Firebase yang stabil dan real-time.
 
-Fitur Utama
+Setiap fitur dioptimalkan untuk kecepatan, akurasi, dan efisiensi penggunaan.
 
-Autentikasi
+---
 
-Login menggunakan email dan password
+## **Gambaran Umum**
 
-Login menggunakan akun Google
+SearchCost mendukung proses pencarian harga melalui pemindaian barcode, input manual, serta penyediaan riwayat pencarian yang tersusun otomatis.
+Sistem autentikasi fleksibel, mendukung login menggunakan email atau akun Google, termasuk pendaftaran dengan username khusus untuk identitas pengguna.
 
-Registrasi dengan tambahan username
+---
 
-Pencarian Harga
+## **Fitur Utama**
 
-Scan barcode secara langsung
+**1. Autentikasi Modern**
 
-Pencarian manual barang
+* Login via email dan password
+* Login Google
+* Registrasi dengan username untuk identitas tampilan
 
-Riwayat pencarian tersimpan otomatis
+**2. Pencarian dan Pemindaian**
 
-Dashboard Admin
+* Pemindaian barcode langsung
+* Pencarian manual
+* Penyimpanan otomatis riwayat pencarian
 
-Manajemen data barang
+**3. Dashboard Administrator**
 
-Manajemen pengguna
+* Pengelolaan data barang
+* Pengelolaan pengguna
+* Ringkasan laporan berbasis Firestore secara real-time
 
-Ringkasan laporan yang diperbarui secara realtime
+**4. Integrasi Firebase**
 
-Integrasi Backend
+* Authentication
+* Cloud Firestore
+* Storage untuk media
+* Hosting opsional untuk web frontend
 
-Firebase Authentication
+---
 
-Cloud Firestore
+## **Struktur Proyek**
 
-Firebase Storage
-
-Struktur Proyek
+```
 app_search_cost/
 │
 ├── lib/
@@ -50,68 +59,87 @@ app_search_cost/
 ├── ios/
 ├── web_public/
 └── pubspec.yaml
+```
 
-Teknologi
+Struktur dibuat agar mudah diperluas dan dipelihara pada pengembangan jangka panjang.
 
-Flutter (Dart)
+---
 
-Firebase (Auth, Firestore, Storage)
+## **Teknologi Inti**
 
-Google Sign-In
+* Framework: Flutter (Dart)
+* Backend: Firebase
+* Autentikasi: Email/Password, Google Sign-In
+* Database: Firestore
+* Penyimpanan: Firebase Storage
+* Scanner: Camera + Barcode Analysis
 
-Barcode / QR Scanner
+---
 
-Cloud Hosting (opsional)
+## **Menjalankan Proyek**
 
-Menjalankan Proyek
+1. Clone repository:
 
-Clone repository:
+   ```
+   git clone <url-repo>
+   ```
+2. Masuk ke folder:
 
-git clone <url-repo>
+   ```
+   cd app_search_cost
+   ```
+3. Install dependence:
 
+   ```
+   flutter pub get
+   ```
+4. Jalankan aplikasi:
 
-Masuk ke folder aplikasi:
+   ```
+   flutter run
+   ```
 
-cd app_search_cost
+---
 
+## **Konfigurasi Firebase**
 
-Install dependensi:
+Berkas konfigurasi yang diperlukan:
 
-flutter pub get
+**Android**
 
-
-Jalankan aplikasi:
-
-flutter run
-
-Konfigurasi Firebase
-
-Pastikan file berikut tersedia:
-
-Android
-
+```
 android/app/google-services.json
+```
 
+**Web**
 
-Web
-
+```
 web_public/js/firebase-config.js
+```
 
+Jika belum tersedia, unduh melalui Firebase Console.
 
-Jika belum ada, unduh dari Firebase Console dan letakkan di path yang sesuai.
+---
 
-Build Release
+## **Build Release**
 
-Android
+Jalankan:
 
+```
 flutter build apk --release
+```
 
+Hasil berada di:
 
-Output tersedia di:
-
+```
 build/app/outputs/flutter-apk/
+```
 
-Lisensi
+---
 
-Proyek ini digunakan untuk kebutuhan pengembangan internal.
-Lisensi dapat ditambahkan sesuai ketentuan penggunaan yang diinginkan.
+## **Lisensi**
+
+Proyek ini dikembangkan untuk keperluan aplikasi internal dan dapat diperluas sesuai kebutuhan operasional.
+Ketentuan lisensi dapat ditambahkan jika aplikasi dirilis secara publik.
+
+---
